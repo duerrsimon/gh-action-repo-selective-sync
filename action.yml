@@ -160,13 +160,16 @@ runs:
       shell: bash
       run: |
         remove_data=$(yq e '.target.remove_after_copy' ${RECIPE} | sed 's/^..//;s/\"//g')
-        
         remove_data_n=$(echo "${remove_data}" | sed '/^\s*$/d' | wc -l)
         echo "=== \"remove_data\" (${remove_data_n} items):"
         echo "${remove_data}"
 
         for (( i=1; i<=${remove_data_n}; i++ )); do
           item=$(sed -n ${i}p <<< "${remove_data}")
+          echo "${item}"
+          echo "${TARGET_DIR}/${item}"
+          compgen -G "${TARGET_DIR}/${item}"
+          
           if compgen -G "${TARGET_DIR}/${item}" > /dev/null; then
             rm -Rf "${TARGET_DIR}/${item}"
           fi  

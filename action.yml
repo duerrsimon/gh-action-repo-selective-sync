@@ -167,7 +167,7 @@ runs:
 
         for (( i=1; i<=${remove_data_n}; i++ )); do
           item=$(sed -n ${i}p <<< "${remove_data}")
-          if [ -e "${TARGET_DIR}/${item}" ]; then
+          if compgen -G "${TARGET_DIR}/${item}" > /dev/null; then
             rm -Rf "${TARGET_DIR}/${item}"
           fi  
         done
